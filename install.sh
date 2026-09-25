@@ -4,7 +4,7 @@ set -Eeuo pipefail
 die() { echo "ERROR: $*" >&2; exit 1; }
 [[ "${EUID}" -ne 0 ]] || die "Chạy bằng user thường, không dùng sudo cho toàn bộ script."
 command -v sudo >/dev/null || die "Thiếu sudo."
-# shellcheck source=/etc/os-release
+# shellcheck disable=SC1091
 . /etc/os-release
 [[ "${ID:-}" == "ubuntu" || "${ID_LIKE:-}" == *ubuntu* ]] || die "Chỉ hỗ trợ Ubuntu và biến thể Ubuntu."
 
