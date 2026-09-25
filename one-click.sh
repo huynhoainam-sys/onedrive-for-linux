@@ -27,8 +27,8 @@ if command -v zenity >/dev/null 2>&1 && [[ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}"
   exec "$repo_dir/gui.sh" "$@"
 fi
 
-read -r -p "Thư mục local [${HOME}/OneDrive-Excel]: " local_dir
-local_dir="${local_dir:-$HOME/OneDrive-Excel}"
+read -r -p "Thư mục local [${HOME}/OneDrive]: " local_dir
+local_dir="${local_dir:-$HOME/OneDrive}"
 read -r -p "Chỉ đồng bộ thư mục OneDrive nào? Ví dụ /BaoCao (để trống = toàn bộ): " remote_dir
 
 ./install.sh

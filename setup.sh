@@ -4,8 +4,9 @@ set -Eeuo pipefail
 die() { echo "ERROR: $*" >&2; exit 1; }
 command -v onedrive >/dev/null || die "Chưa cài onedrive. Chạy ./install.sh trước."
 command -v systemctl >/dev/null || die "Thiếu systemctl."
+systemctl --user show-environment >/dev/null 2>&1 || die "Không kết nối được user systemd. Hãy chạy trong phiên desktop Linux đã đăng nhập, hoặc kiểm tra XDG_RUNTIME_DIR/DBUS_SESSION_BUS_ADDRESS."
 
-sync_dir="$HOME/OneDrive-Excel"
+sync_dir="$HOME/OneDrive"
 include=""
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -46,6 +47,7 @@ ensure_config() {
 
 ensure_config monitor_interval 300
 ensure_config monitor_fullscan_frequency 12
+ensure_config sync_dir "$sync_dir"
 ensure_config enable_logging true
 ensure_config log_dir "$confdir/logs"
 ensure_config display_transfer_metrics true
