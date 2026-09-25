@@ -9,6 +9,7 @@ warning() { printf '[WARN] %s\n' "$1"; warn=$((warn + 1)); }
 error() { printf '[FAIL] %s\n' "$1"; fail=$((fail + 1)); }
 
 if [[ -r /etc/os-release ]]; then
+  # shellcheck source=/etc/os-release
   . /etc/os-release
   if [[ "${ID:-}" == "ubuntu" || "${ID:-}" == "linuxmint" || "${ID_LIKE:-}" == *ubuntu* ]]; then
     check "Ubuntu/Linux Mint detected: ${PRETTY_NAME:-unknown}"
