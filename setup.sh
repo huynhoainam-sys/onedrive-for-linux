@@ -25,6 +25,10 @@ if [[ ! -f "$confdir/config" ]]; then
 sync_dir = "$sync_dir"
 monitor_interval = "300"
 monitor_fullscan_frequency = "12"
+enable_logging = "true"
+log_dir = "$confdir/logs"
+display_transfer_metrics = "true"
+skip_file = "~\$*|*.tmp|*.part|*.crdownload|*.lock"
 check_nomount = "true"
 check_nosync = "true"
 EOF
@@ -53,7 +57,7 @@ RestartSec=15
 WantedBy=default.target
 EOF
 
-systemctl --user daemon-reload
+systemctl --user daemon-reload 2>/dev/null || true
 systemctl --user stop onedrive-excel-sync.service 2>/dev/null || true
 echo "Thư mục local: $sync_dir"
 echo "Đang mở bước đăng nhập Microsoft; hãy chọn ĐÚNG tài khoản OneDrive."

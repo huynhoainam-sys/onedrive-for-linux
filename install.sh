@@ -9,7 +9,7 @@ command -v sudo >/dev/null || die "Thiếu sudo."
 
 echo "[0/4] Cài công cụ bootstrap..."
 sudo apt-get update
-sudo apt-get install -y --no-install-recommends ca-certificates curl gnupg
+sudo apt-get install -y --no-install-recommends ca-certificates curl gnupg zenity
 
 if [[ "${ID:-}" == "linuxmint" ]]; then
   case "${VERSION_ID:-}" in

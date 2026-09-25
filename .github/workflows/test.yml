@@ -1,0 +1,24 @@
+name: Linux shell tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Bash syntax and smoke test
+        run: bash tests/smoke.sh
+      - name: ShellCheck
+        run: shellcheck install.sh setup.sh one-click.sh gui.sh create-launcher.sh doctor.sh uninstall.sh tests/smoke.sh

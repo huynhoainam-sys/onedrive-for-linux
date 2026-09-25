@@ -17,7 +17,15 @@ pause_at_end() {
 }
 trap pause_at_end EXIT
 
-chmod +x install.sh setup.sh doctor.sh uninstall.sh
+chmod +x install.sh setup.sh gui.sh doctor.sh uninstall.sh
+
+if ! command -v zenity >/dev/null 2>&1 && [[ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]] && [[ "${ONEDRIVE_SYNC_BOOTSTRAP:-0}" != "1" ]]; then
+  ONEDRIVE_SYNC_BOOTSTRAP=1 ./install.sh
+fi
+
+if command -v zenity >/dev/null 2>&1 && [[ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]] && [[ "${ONEDRIVE_SYNC_TERMINAL:-0}" != "1" ]]; then
+  exec "$repo_dir/gui.sh" "$@"
+fi
 
 read -r -p "Thư mục local [${HOME}/OneDrive-Excel]: " local_dir
 local_dir="${local_dir:-$HOME/OneDrive-Excel}"
