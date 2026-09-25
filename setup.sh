@@ -18,7 +18,7 @@ done
 
 confdir="$HOME/.config/onedrive-excel-sync"
 service_dir="$HOME/.config/systemd/user"
-mkdir -p "$confdir" "$service_dir" "$sync_dir"
+mkdir -p "$confdir/logs" "$service_dir" "$sync_dir"
 
 if [[ ! -f "$confdir/config" ]]; then
   cat > "$confdir/config" <<EOF
@@ -35,6 +35,23 @@ EOF
 else
   sed -i "s|^sync_dir = .*|sync_dir = \"$sync_dir\"|" "$confdir/config"
 fi
+
+ensure_config() {
+  local key="$1"
+  local value="$2"
+  if ! grep -Fq "$key = " "$confdir/config"; then
+    printf '%s = "%s"\n' "$key" "$value" >> "$confdir/config"
+  fi
+}
+
+ensure_config monitor_interval 300
+ensure_config monitor_fullscan_frequency 12
+ensure_config enable_logging true
+ensure_config log_dir "$confdir/logs"
+ensure_config display_transfer_metrics true
+ensure_config skip_file '~$*|*.tmp|*.part|*.crdownload|*.lock'
+ensure_config check_nomount true
+ensure_config check_nosync true
 
 if [[ -n "$include" ]]; then
   printf '%s\n' "$include" > "$confdir/sync_list"

@@ -46,7 +46,7 @@ sudo apt-get install -y --no-install-recommends --no-install-suggests onedrive
 echo "[3/4] Tắt service onedrive mặc định để tránh chạy trùng..."
 systemctl --user disable --now onedrive.service 2>/dev/null || true
 rm -f "$HOME/.config/systemd/user/onedrive.service"
-systemctl --user daemon-reload
+systemctl --user daemon-reload 2>/dev/null || true
 
 echo "[4/4] Hoàn tất: $(command -v onedrive)"
 onedrive --version
