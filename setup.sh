@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+die() { echo "ERROR: $*" >&2; exit 1; }
+command -v onedrive >/dev/null || die "Chưa cài onedrive. Chạy ./install.sh trước."
+command -v systemctl >/dev/null || die "Thiếu systemctl."
+
+sync_dir="$HOME/OneDrive-Excel"
+include=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --sync-dir) [[ $# -ge 2 ]] || die "Thiếu giá trị cho --sync-dir"; sync_dir="$2"; shift 2 ;;
+    --include) [[ $# -ge 2 ]] || die "Thiếu giá trị cho --include"; include="$2"; shift 2 ;;
+    -h|--help) echo "Usage: ./setup.sh [--sync-dir PATH] [--include /RemoteFolder]"; exit 0 ;;
+    *) die "Tham số không hợp lệ: $1" ;;
+  esac
+done
+
+confdir="$HOME/.config/onedrive-excel-sync"
+service_dir="$HOME/.config/systemd/user"
+mkdir -p "$confdir" "$service_dir" "$sync_dir"
+
+if [[ ! -f "$confdir/config" ]]; then
+  cat > "$confdir/config" <<EOF
+sync_dir = "$sync_dir"
+monitor_interval = "300"
+monitor_fullscan_frequency = "12"
+check_nomount = "true"
+check_nosync = "true"
+EOF
+else
+  sed -i "s|^sync_dir = .*|sync_dir = \"$sync_dir\"|" "$confdir/config"
+fi
+
+if [[ -n "$include" ]]; then
+  printf '%s\n' "$include" > "$confdir/sync_list"
+else
+  rm -f "$confdir/sync_list"
+fi
+
+cat > "$service_dir/onedrive-excel-sync.service" <<EOF
+[Unit]
+Description=OneDrive Excel Sync
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=$(command -v onedrive) --monitor --confdir="$confdir"
+Restart=on-failure
+RestartSec=15
+
+[Install]
+WantedBy=default.target
+EOF
+
+systemctl --user daemon-reload
+systemctl --user stop onedrive-excel-sync.service 2>/dev/null || true
+echo "Thư mục local: $sync_dir"
+echo "Đang mở bước đăng nhập Microsoft; hãy chọn ĐÚNG tài khoản OneDrive."
+onedrive --confdir="$confdir"
+
+echo "Chạy dry-run có resync để kiểm tra tài khoản và danh sách file..."
+onedrive --confdir="$confdir" --synchronize --resync --verbose --dry-run
+read -r -p "Dry-run đúng tài khoản và đúng thư mục? Gõ YES để đồng bộ thật: " answer
+[[ "$answer" == "YES" ]] || die "Đã dừng trước khi đồng bộ thật."
+
+onedrive --confdir="$confdir" --synchronize --resync
+systemctl --user enable --now onedrive-excel-sync.service
+loginctl enable-linger "$USER" >/dev/null 2>&1 || true
+echo "Hoàn tất. Kiểm tra: systemctl --user status onedrive-excel-sync"
