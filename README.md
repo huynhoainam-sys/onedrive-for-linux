@@ -1,15 +1,15 @@
-# OneDrive Excel Sync for Ubuntu
+# OneDrive for Linux
 Bộ cài nhanh để liên kết một tài khoản Microsoft OneDrive và đồng bộ file Excel trên Ubuntu/Linux Mint. Hỗ trợ Ubuntu 22.04/24.04 và Linux Mint 21.x/22.x.
 
 Engine sử dụng [abraunegg/onedrive](https://github.com/abraunegg/onedrive), hỗ trợ theo dõi thay đổi local bằng `inotify`, cập nhật cloud qua monitor mode và chạy nền bằng `systemd --user`.
 ## Cài từ GitHub
 ```bash
-git clone https://github.com/huynhoainam-sys/onedrive-excel-sync.git
-cd onedrive-excel-sync
+git clone https://github.com/huynhoainam-sys/onedrive-for-linux.git
+cd onedrive-for-linux
 chmod +x create-launcher.sh one-click.sh
 ./create-launcher.sh
 ```
-Sau đó mở menu Applications và chọn `OneDrive Excel Sync - Install`. Launcher sẽ hỏi thư mục local và thư mục OneDrive, cài dependency, mở đăng nhập Microsoft, chạy `resync --dry-run`, rồi tạo service đồng bộ nền.
+Sau đó mở menu Applications và chọn `OneDrive for Linux - Install`. Launcher sẽ hỏi thư mục local và thư mục OneDrive, cài dependency, mở đăng nhập Microsoft, chạy `resync --dry-run`, rồi tạo service đồng bộ nền.
 
 Hoặc chạy trực tiếp giao diện:
 
