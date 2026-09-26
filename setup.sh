@@ -83,11 +83,11 @@ echo "Đang mở bước đăng nhập Microsoft; hãy chọn ĐÚNG tài khoả
 onedrive --confdir="$confdir"
 
 echo "Chạy dry-run có resync để kiểm tra tài khoản và danh sách file..."
-onedrive --confdir="$confdir" --synchronize --resync --verbose --dry-run
+onedrive --confdir="$confdir" --sync --resync --verbose --dry-run
 read -r -p "Dry-run đúng tài khoản và đúng thư mục? Gõ YES để đồng bộ thật: " answer
 [[ "$answer" == "YES" ]] || die "Đã dừng trước khi đồng bộ thật."
 
-onedrive --confdir="$confdir" --synchronize --resync
+onedrive --confdir="$confdir" --sync --resync
 systemctl --user enable --now onedrive-excel-sync.service
 loginctl enable-linger "$USER" >/dev/null 2>&1 || true
 echo "Hoàn tất. Kiểm tra: systemctl --user status onedrive-excel-sync"

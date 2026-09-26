@@ -24,7 +24,8 @@ if ! command -v zenity >/dev/null 2>&1 && [[ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-
 fi
 
 if command -v zenity >/dev/null 2>&1 && [[ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]] && [[ "${ONEDRIVE_SYNC_TERMINAL:-0}" != "1" ]]; then
-  exec "$repo_dir/gui.sh" "$@"
+  "$repo_dir/gui.sh" "$@"
+  exit 0
 fi
 
 read -r -p "Thư mục local [${HOME}/OneDrive]: " local_dir

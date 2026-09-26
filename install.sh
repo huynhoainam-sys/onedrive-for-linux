@@ -14,14 +14,14 @@ sudo apt-get install -y --no-install-recommends ca-certificates curl gnupg zenit
 
 if [[ "${ID:-}" == "linuxmint" ]]; then
   case "${VERSION_ID:-}" in
-    21|21.*) obs_release="Ubuntu_22.04" ;;
-    22|22.*) obs_release="Ubuntu_24.04" ;;
+    21|21.*) obs_release="xUbuntu_22.04" ;;
+    22|22.*) obs_release="xUbuntu_24.04" ;;
     *) die "Linux Mint ${VERSION_ID:-unknown} chưa có mapping OBS trong repo này." ;;
   esac
 else
   case "${VERSION_ID:-}" in
-    22.04) obs_release="Ubuntu_22.04" ;;
-    24.04) obs_release="Ubuntu_24.04" ;;
+    22.04) obs_release="xUbuntu_22.04" ;;
+    24.04) obs_release="xUbuntu_24.04" ;;
     25.10) obs_release="Ubuntu_25.10" ;;
     26.04) obs_release="Ubuntu_26.04" ;;
     *) die "Ubuntu ${VERSION_ID:-unknown} chưa có mapping OBS trong repo này." ;;
