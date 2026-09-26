@@ -88,6 +88,7 @@ read -r -p "Dry-run đúng tài khoản và đúng thư mục? Gõ YES để đ�
 [[ "$answer" == "YES" ]] || die "Đã dừng trước khi đồng bộ thật."
 
 onedrive --confdir="$confdir" --sync --resync
-systemctl --user enable --now onedrive-excel-sync.service
+systemctl --user enable --now onedrive-excel-sync.service || die "Không bật được dịch vụ đồng bộ nền. Chạy ./repair-service.sh trong phiên desktop đã đăng nhập."
+systemctl --user is-active --quiet onedrive-excel-sync.service || die "Dịch vụ đồng bộ nền chưa chạy. Chạy ./repair-service.sh trong phiên desktop đã đăng nhập."
 loginctl enable-linger "$USER" >/dev/null 2>&1 || true
 echo "Hoàn tất. Kiểm tra: systemctl --user status onedrive-excel-sync"

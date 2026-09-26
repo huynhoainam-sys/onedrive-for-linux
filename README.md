@@ -27,6 +27,12 @@ Khi đăng nhập Microsoft, hãy chọn đúng tài khoản OneDrive. Mặc đ�
 ```bash
 ./setup.sh --sync-dir "$HOME/OneDrive" --include /BaoCao
 ```
+
+Nếu file đã tải về nhưng đổi tên/sửa file không đồng bộ lên OneDrive, bật lại dịch vụ nền trong phiên desktop đang đăng nhập:
+
+```bash
+./repair-service.sh
+```
 ## Kiểm tra
 
 ```bash

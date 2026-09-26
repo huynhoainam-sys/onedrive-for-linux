@@ -42,13 +42,13 @@ fi
 if systemctl --user is-enabled --quiet onedrive-excel-sync.service 2>/dev/null; then
   check "systemd service is enabled"
 else
-  warning "systemd service is not enabled"
+  warning "systemd service is not enabled; run ./repair-service.sh from a logged-in desktop session"
 fi
 
 if systemctl --user is-active --quiet onedrive-excel-sync.service 2>/dev/null; then
   check "systemd service is active"
 else
-  warning "systemd service is not active"
+  warning "systemd service is not active; run ./repair-service.sh from a logged-in desktop session"
 fi
 
 if [[ -f "$confdir/config" ]] && grep -q '^sync_dir = ' "$confdir/config"; then
